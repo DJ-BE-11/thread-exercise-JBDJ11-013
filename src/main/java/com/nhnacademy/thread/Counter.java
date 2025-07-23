@@ -21,7 +21,7 @@ public class Counter {
 
     public Counter(long countMaxSize) {
 
-        if(countMaxSize <=0){
+        if(countMaxSize <= 0){
             throw new IllegalArgumentException();
         }
 
@@ -38,6 +38,6 @@ public class Counter {
             }
             count++;
             log.debug("name:{},count:{}",Thread.currentThread().getName(),count);
-        }while (count<countMaxSize);
+        } while (count<countMaxSize);
     }
 }
