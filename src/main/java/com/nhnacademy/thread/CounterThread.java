@@ -17,17 +17,22 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Objects;
 
 @Slf4j
-//TODO#1 CounterThread는 Thread를 상속 합니다.
-public class CounterThread {
+// CounterThread는 Thread를 상속합니다.
+public class CounterThread extends Thread {
     private final long countMaxSize;
 
     private long count;
 
     public CounterThread(String name, long countMaxSize) {
-        //TODO#2 name <-- null 이거나 공백 문자열이면 IllegalArgumentException이 발생 합니다.
+        // name <-- null 이거나 공백 문자열이면 IllegalArgumentException이 발생합니다.
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("스레드 이름은 null이거나 공백일 수 없습니다.");
+        }
 
-        //TODO#3 countMaxSize <=0 이면 IllegalArgumentException이 발생 합니다.
-
+        // countMaxSize <=0 이면 IllegalArgumentException이 발생 합니다.
+        if (countMaxSize <= 0) {
+            throw new IllegalArgumentException("countMaxSize는 0보다 커야 합니다.");
+        }
 
         this.setName(name);
         this.countMaxSize = countMaxSize;
@@ -37,7 +42,7 @@ public class CounterThread {
     @Override
     public void run() {
 
-        /*TODO#4 run method를 구현 합니다.
+        /* run method를 구현 합니다.
             1초에 한 번식 다음과 같이 출력 됩니다.
             - Thread.sleep(1000)을 사용하세요.
             ex) thread:my-thread, count:1
@@ -47,6 +52,16 @@ public class CounterThread {
 
         do {
 
-        }while (count<countMaxSize);
+            this.count++;
+
+            try {
+                Thread.sleep(1000);
+                System.out.printf("thread: %s, count: %d%n", this.getName(), this.count);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        } while (count < countMaxSize);
     }
 }
