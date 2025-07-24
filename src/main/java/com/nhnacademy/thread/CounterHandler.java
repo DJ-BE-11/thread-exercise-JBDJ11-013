@@ -21,7 +21,7 @@ public class CounterHandler implements Runnable  {
     private long count;
 
     public CounterHandler(long countMaxSize) {
-        if(countMaxSize<=0){
+        if(countMaxSize <= 0){
             throw new IllegalArgumentException();
         }
 
@@ -39,6 +39,6 @@ public class CounterHandler implements Runnable  {
             }
             count++;
             log.debug("thread:{},count:{}",Thread.currentThread().getName(),count);
-        }while (count<countMaxSize);
+        }while (count < countMaxSize);
     }
 }
