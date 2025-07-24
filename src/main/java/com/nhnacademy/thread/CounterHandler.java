@@ -21,7 +21,7 @@ public class CounterHandler implements Runnable  {
     private long count;
 
     public CounterHandler(long countMaxSize) {
-        if(countMaxSize<=0){
+        if(countMaxSize <= 0){
             throw new IllegalArgumentException();
         }
 
@@ -41,8 +41,8 @@ public class CounterHandler implements Runnable  {
                 throw new RuntimeException(e);
             }
 
-        //TODO#2 해당 thread가 isInterrupted() 상태가 false 일 while loop를 실행 할 수 있도록 조건을 추가하세요
-        }while (count<countMaxSize);
+        // 해당 thread가 isInterrupted() 상태가 false 일 때 while loop를 실행 할 수 있도록 조건을 추가하세요
+        }while ((count < countMaxSize) && !Thread.currentThread().isInterrupted());
 
     }
 }
