@@ -22,11 +22,22 @@ public class App
     {
         CounterHandler counterHandler = new CounterHandler(10l);
         Thread thread = new Thread(counterHandler);
+
         log.debug("thread-state:{}",thread.getState());
         thread.setName("my-counter");
-        thread.start();
-        //TODO#1 thread가 실행 후 (1-10 count 증가 후  아래 로그가 출력 됩니다.)
-        //thread.join()을 호출 하면 thread가 종료될 때 까지 main thread가 대기하게 됩니다.
+
+        // thread가 실행 후 (1-10 count 증가 후  아래 로그가 출력 됩니다.)
+        // thread.join()을 호출 하면 thread가 종료될 때 까지 main thread가 대기하게 됩니다.
+        // - B { A.join() } : A가 종료될 때까지 B가 대기함
+        //   -- A: my-counter Thread
+        //   -- B: Main Thread
+        try {
+            thread.start();
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         log.debug("Application exit!");
         log.debug("thread-state:{}",thread.getState());
