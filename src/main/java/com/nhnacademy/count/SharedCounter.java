@@ -19,42 +19,65 @@ public class SharedCounter {
     private Semaphore semaphore;
 
     public SharedCounter(){
-        count =0l;
+        this.count =0l;
     }
 
     public SharedCounter(long count) {
-        if(count <0){
-            throw new IllegalArgumentException("count > 0 ");
+        if(count < 0){
+            throw new IllegalArgumentException("count > 0");
         }
+
         this.count = count;
-        //TODO#1-1 semaphore를 생성 합니다.( 동시에 하나의 Thread만 접근할 수 있습니다. ), permits prameter를 확인하세요.
-        semaphore = null;
+        // semaphore를 생성 합니다. ( 동시에 하나의 Thread만 접근할 수 있습니다. ), permits prameter를 확인하세요.
+        // 파라미터: 동시에 접근을 허용할 허가(permits) 수를 1로 지정 --> 동시에 하나의 스레드만 접근 가능
+        this.semaphore = new Semaphore(1);
     }
 
     public long getCount(){
-        /*TODO#1-2 count 를 반환 합니다.
+        /* count 를 반환 합니다.
             semaphore.acquire()를 호출하여 허가를 획득 합니다.
             쓰레드가 작업이 완료되면
             semaphore.release()를 호출하여
             허가를 반환 합니다.
          */
 
-        return count;
+        try {
+            this.semaphore.acquire();
+            return this.count;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.semaphore.release();
+        }
     }
 
     public long increaseAndGet(){
-        /* TODO#1-3 count = count + 1 증가시키고 count를 반환 합니다.
+        /* count = count + 1 증가시키고 count를 반환 합니다.
            1-2 처럼 semaphore를 이용해서 동기화할 수 있도록 구현 합니다.
         */
-        count = count + 1;
-        return count;
+
+        try {
+            this.semaphore.acquire();
+            return ++this.count;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.semaphore.release();
+        }
     }
 
     public long decreaseAndGet(){
-        /*TODO#1-4 count = count-1 감소시키고 count를 반환 합니다.
-          1-2 처럼 semaphore를 이용해서 동기화할 수 있도록 구현 합니다.
+        /* count = count-1 감소시키고 count를 반환 합니다.
+           1-2 처럼 semaphore를 이용해서 동기화할 수 있도록 구현 합니다.
         */
-        count = count - 1;
-        return count;
+
+        try {
+            this.semaphore.acquire();
+            return --this.count;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.semaphore.release();
+        }
     }
 }
