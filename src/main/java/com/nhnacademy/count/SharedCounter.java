@@ -16,26 +16,26 @@ public class SharedCounter {
 
     private long count;
 
-    public SharedCounter(){
+    public SharedCounter() {
         this(0l);
     }
 
     public SharedCounter(long count) {
-        //TODO#1-1 생성자를 초기화 합니다. count < 0 IllegalArgumentException아 발생 합니다.
+        // 생성자를 초기화 합니다. count < 0 IllegalArgumentException이 발생 합니다.
         if(count <0){
-            throw new IllegalArgumentException("count > 0 ");
+            throw new IllegalArgumentException("count > 0");
         }
+
         this.count = count;
     }
 
-    //TODO#1-2 mehtod 단위 lock을 걸고, count 를 반환 합니다.
+    // mehtod 단위 lock을 걸고, count 를 반환 합니다.
     public synchronized long getCount(){
         return count;
     }
 
     public long increaseAndGet(){
-
-        //TODO#1-3 block 단위로 lock을 걸고 count = count + 1 증가시키고 count를 반환 합니다.
+        // block 단위로 lock을 걸고 count = count + 1 증가시키고 count를 반환 합니다.
         synchronized (this) {
             count = count + 1;
             return count;
@@ -43,7 +43,7 @@ public class SharedCounter {
     }
 
     public long decreaseAndGet(){
-        //TODO#1-4 count = count -1  부분 lock을 걸고, count를 반환 합니다.
+        // count = count -1  부분 lock을 걸고, count를 반환 합니다.
         synchronized (this) {
             count = count - 1;
         }
