@@ -36,10 +36,8 @@ public class App
         Thread threadA = new Thread(task, "counter-A");
         Thread threadB = new Thread(task, "counter-B");
 
+
         threadA.start();
         threadB.start();
     }
-
-
-
 }
