@@ -22,7 +22,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        //TODO#1 Thread-1 가 resource2의 접근 권한을 획득한 상태에서 resource1의 접근 권한을 대기하고 있습니다.
+        // Thread-1이 resource2의 접근 권한을 획득한 상태에서 resource1의 접근 권한을 대기하고 있습니다.
         Thread thread1 = new Thread(() -> {
             synchronized (resource2) {
                 log.debug("{}: locked resource 2", Thread.currentThread().getName() );
@@ -40,7 +40,7 @@ public class App {
         });
         thread1.setName("Thread-1");
 
-        //TODO#2 Thread-2 가 resource1의 접근 권한을 획득한 상태에서 resource2의 접근 권한을 대기하고 있습니다.
+        // Thread-2가 resource1의 접근 권한을 획득한 상태에서 resource2의 접근 권한을 대기하고 있습니다.
         Thread thread2 = new Thread(() -> {
             synchronized (resource1) { // resource1을 먼저 잠금
                 log.debug("{}: locked resource 1",Thread.currentThread().getName());
@@ -58,7 +58,10 @@ public class App {
         });
         thread2.setName("Thread-2");
 
-
+        /* Circular Wait Deadlock
+        *    Thread1: [점유 -> resource2] --1s sleep--> [대기 -> resource1]
+        *    Thread2: [점유 -> resource1] --1s sleep--> [대기 -> resource2]
+        */
         thread1.start();
         thread2.start();
     }
